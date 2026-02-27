@@ -36,26 +36,8 @@ python train.py
 - Trains MobileNetV2 with balanced class weights
 - Saves model as `pepper_disease_model.keras`
 
-### 2. Test the Model
 
-```bash
-python test.py
-```
-
-**Output:**
-- Classification report (precision, recall, F1-score)
-- Confusion matrix
-- Overall accuracy metrics
-
-### 3. Quick Model Inference
-
-```bash
-python test_model.py
-```
-
-Tests the model on a sample image and displays predictions.
-
-### 4. Start FastAPI Server (Production)
+### 2. Start FastAPI Server (Production)
 
 ```bash
 python main.py
