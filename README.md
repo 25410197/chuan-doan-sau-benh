@@ -10,10 +10,10 @@ A deep learning project for automated detection and classification of pepper pla
 
 ### Setup Steps
 
-1. **Create virtual environment** (recommended)
+1. **Create virtual environment** (recommended to use py 3.12)
    ```bash
-   python -m venv venv
-   .\venv\Scripts\Activate.ps1
+   py -3.12 -m venv venv_py312
+   .\venv_py312\Scripts\Activate.ps1
    ```
 
 2. **Install dependencies**
