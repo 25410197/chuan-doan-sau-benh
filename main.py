@@ -12,13 +12,23 @@ app = FastAPI()
 # Load model một lần khi start server
 model = tf.keras.models.load_model("pepper_disease_model.keras")
 
-class_names = [
-    "anthracnose",
-    "healthy",
-    "leaf_curl",
-    "leaf_spot",
-    "nutrient_deficiency"
+# Class order must match training dataset (alphabetical order from folder names)
+class_names_vi = [
+    "đốm lá",           # Target spot
+    "khảm lá",          # Anthracnose
+    "lá khỏe",          # Healthy leaves
+    "thán thư",         # Bacterial spot
+    "vàng lá"           # Leaf yellowing
 ]
+
+# Mapping to English for display
+class_names_en = {
+    "đốm lá": "Target Spot",
+    "khảm lá": "Anthracnose",
+    "lá khỏe": "Healthy Leaves",
+    "thán thư": "Bacterial Spot",
+    "vàng lá": "Leaf Yellowing"
+}
 
 def prepare_image(image: Image.Image):
     image = image.resize((IMG_SIZE, IMG_SIZE))
@@ -53,10 +63,13 @@ async def predict(file: UploadFile = File(...)):
     processed_image = prepare_image(image)
 
     prediction = model.predict(processed_image)
-    predicted_class = class_names[np.argmax(prediction)]
+    predicted_idx = np.argmax(prediction)
+    predicted_class_vi = class_names_vi[predicted_idx]
+    predicted_class_en = class_names_en[predicted_class_vi]
     confidence = float(np.max(prediction))
 
     return JSONResponse({
-        "class": predicted_class,
+        "class_vietnamese": predicted_class_vi,
+        "class_english": predicted_class_en,
         "confidence": round(confidence, 4)
     })
