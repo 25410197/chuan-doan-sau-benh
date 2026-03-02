@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import classification_report, confusion_matrix
 
-IMG_SIZE = 224
+IMG_SIZE = 300
 BATCH_SIZE = 32
 
 # ======================
