@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models
-from tensorflow.keras.applications import MobileNetV2, EfficientNetB0
+from tensorflow.keras.applications import  EfficientNetB0, EfficientNetB3
+from tensorflow.keras.applications.efficientnet import preprocess_input
 import numpy as np
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import classification_report, confusion_matrix
@@ -44,8 +45,8 @@ class_weights = compute_class_weight(
 
 class_weights = dict(enumerate(class_weights))
 
-train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+train_ds = train_ds.prefetch(AUTOTUNE)
+val_ds = val_ds.prefetch(AUTOTUNE)
 
 print("Class weights:", class_weights)
 
@@ -61,26 +62,26 @@ print("Class weights:", class_weights)
 
 data_augmentation = tf.keras.Sequential([
     layers.RandomFlip("horizontal"),
-    layers.RandomRotation(0.3),
-    layers.RandomZoom(0.3),
-    layers.RandomContrast(0.3),
-    layers.RandomBrightness(0.2),
+    layers.RandomRotation(0.1),  # Giảm từ 0.3
+    layers.RandomZoom(0.1),  # Giảm từ 0.3
+    layers.RandomContrast(0.1),  # Giảm từ 0.3
+    layers.RandomBrightness(0.1),  # Giảm từ 0.2
 ])
 
 # ======================
 # BASE MODEL
 # ======================
-base_model = MobileNetV2(
+# base_model = MobileNetV2(
+#     input_shape=(IMG_SIZE, IMG_SIZE, 3),
+#     include_top=False,
+#     weights="imagenet"
+# )
+
+base_model = EfficientNetB3(
     input_shape=(IMG_SIZE, IMG_SIZE, 3),
     include_top=False,
     weights="imagenet"
 )
-
-# base_model = EfficientNetB0(
-#     input_shape=(224,224,3),
-#     include_top=False,
-#     weights="imagenet"
-# )
 
 base_model.trainable = False
 
@@ -89,18 +90,22 @@ base_model.trainable = False
 # ======================
 inputs = tf.keras.Input(shape=(IMG_SIZE, IMG_SIZE, 3))
 x = data_augmentation(inputs)
-# Rescaling thay cho preprocess_input: pixel [0,255] -> [-1,1]
-x = layers.Rescaling(1./127.5, offset=-1)(x)
+# EfficientNetB0 cần normalize về [0, 1] thay vì [-1, 1]
+# x = layers.Rescaling(1./255.0)(x)
+# Dùng preprocess_input của EfficientNet (normalize để match ImageNet training)
+x = preprocess_input(x)
 x = base_model(x, training=False)
 x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dense(256, activation='relu')(x)
+x = layers.Dropout(0.3)(x)
 x = layers.Dense(128, activation='relu')(x)
-x = layers.Dropout(0.4)(x)
+x = layers.Dropout(0.2)(x)
 outputs = layers.Dense(len(class_names), activation='softmax')(x)
 
 model = models.Model(inputs, outputs)
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),  # Giảm learning rate so với MobileNetV2
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
@@ -112,14 +117,14 @@ model.summary()
 # ======================
 early_stop_1 = tf.keras.callbacks.EarlyStopping(
     monitor='val_loss',
-    patience=5,
+    patience=7,  # Tăng patience để model có thêm thời gian học
     restore_best_weights=True
 )
 
 history = model.fit(
     train_ds,
     validation_data=val_ds,
-    epochs=20,
+    epochs=30,  # Tăng epochs từ 20
     class_weight=class_weights,
     callbacks=[early_stop_1]
 )
@@ -129,12 +134,12 @@ history = model.fit(
 # ======================
 base_model.trainable = True
 
-# Freeze 100 layers đầu
-for layer in base_model.layers[:100]:
+# Freeze layers đầu - EfficientNetB0 có ~237 layers, freeze ~150 layer đầu
+for layer in base_model.layers[:120]:
     layer.trainable = False
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),  # Cực kỳ thấp cho fine-tune
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
@@ -142,14 +147,14 @@ model.compile(
 # Tạo callback MỚI cho Phase 2 (không dùng lại từ Phase 1)
 early_stop_2 = tf.keras.callbacks.EarlyStopping(
     monitor='val_loss',
-    patience=5,
+    patience=7,  # Tăng patience cho fine-tune
     restore_best_weights=True
 )
 
 history_fine = model.fit(
     train_ds,
     validation_data=val_ds,
-    epochs=20,
+    epochs=30,  # Tăng epochs từ 20
     class_weight=class_weights,
     callbacks=[early_stop_2]
 )
@@ -168,7 +173,7 @@ print("\nConfusion Matrix:")
 print(confusion_matrix(y_true, y_pred))
 
 # ===== Save model cuối cùng =====
-model.save("pepper_disease_model.keras")
+model.save("../output-model/pepper_disease_model_v2_efficientnet.keras")
 
 # ======================
 # PHASE 3: SEPARATE TEST EVALUATION

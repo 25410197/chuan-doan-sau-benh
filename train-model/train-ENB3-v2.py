@@ -13,7 +13,7 @@ BATCH_SIZE = 32
 # LOAD DATASET
 # ======================
 train_ds = tf.keras.utils.image_dataset_from_directory(
-    "dataset_cropped_new/train",
+    "../dataset_cropped_new/train",
     image_size=(IMG_SIZE, IMG_SIZE),
     batch_size=BATCH_SIZE,
     shuffle=True,
@@ -21,7 +21,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 )
 
 val_ds = tf.keras.utils.image_dataset_from_directory(
-    "dataset_cropped_new/val",
+    "../dataset_cropped_new/val",
     image_size=(IMG_SIZE, IMG_SIZE),
     batch_size=BATCH_SIZE,
     shuffle=False  # QUAN TRỌNG: không shuffle val để evaluation đúng
@@ -134,7 +134,7 @@ history = model.fit(
 # ======================
 base_model.trainable = True
 
-# Freeze layers đầu - EfficientNetB0 có ~237 layers, freeze ~150 layer đầu
+# Freeze 120 layers đầu - Early layers usually detect simple edges and lines, we will only train the later layers
 for layer in base_model.layers[:120]:
     layer.trainable = False
 
@@ -173,7 +173,7 @@ print("\nConfusion Matrix:")
 print(confusion_matrix(y_true, y_pred))
 
 # ===== Save model cuối cùng =====
-model.save("pepper_disease_model_v2_efficientnet.keras")
+model.save("../output-model/pepper_disease_model_v2_efficientnet.keras")
 
 # ======================
 # PHASE 3: SEPARATE TEST EVALUATION
@@ -184,7 +184,7 @@ print("="*50)
 
 # Load test dataset independently (hoàn toàn tách biệt)
 test_ds = tf.keras.utils.image_dataset_from_directory(
-    "dataset_cropped_new/test",
+    "../dataset_cropped_new/test",
     image_size=(IMG_SIZE, IMG_SIZE),
     batch_size=BATCH_SIZE,
     shuffle=False  # không shuffle để evaluation đúng
