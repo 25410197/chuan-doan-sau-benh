@@ -4,6 +4,50 @@ from tensorflow.keras.applications import MobileNetV2, EfficientNetB0
 import numpy as np
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import classification_report, confusion_matrix
+import logging
+import time
+
+# Suppress PIL DecompressionBombWarning
+from PIL import Image
+Image.MAX_IMAGE_PIXELS = None
+import warnings
+warnings.filterwarnings('ignore', category=Image.DecompressionBombWarning)
+
+# =====================
+# LOGGING CONFIG
+# =====================
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(message)s',
+    handlers=[
+        logging.FileHandler('epoch_training_log.txt'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# =====================
+# CUSTOM CALLBACK FOR EPOCH LOGGING
+# =====================
+class EpochLogger(tf.keras.callbacks.Callback):
+    def __init__(self, total_steps_per_epoch=1):
+        super().__init__()
+        self.total_steps_per_epoch = total_steps_per_epoch
+        
+    def on_epoch_end(self, epoch, logs=None):
+        if logs is None:
+            logs = {}
+        
+        loss = logs.get('loss', 0)
+        accuracy = logs.get('accuracy', 0)
+        val_loss = logs.get('val_loss', 0)
+        val_accuracy = logs.get('val_accuracy', 0)
+        
+        epoch_msg = (f"Epoch {epoch + 1} | "
+                     f"loss: {loss:.4f} - accuracy: {accuracy:.4f} - "
+                     f"val_loss: {val_loss:.4f} - val_accuracy: {val_accuracy:.4f}")
+        
+        logger.info(epoch_msg)
 
 IMG_SIZE = 224
 BATCH_SIZE = 32
@@ -116,12 +160,18 @@ early_stop_1 = tf.keras.callbacks.EarlyStopping(
     restore_best_weights=True
 )
 
+epoch_logger_1 = EpochLogger()
+
+logger.info("="*60)
+logger.info("PHASE 1 TRAINING START")
+logger.info("="*60)
+
 history = model.fit(
     train_ds,
     validation_data=val_ds,
     epochs=20,
     class_weight=class_weights,
-    callbacks=[early_stop_1]
+    callbacks=[early_stop_1, epoch_logger_1]
 )
 
 # ======================
@@ -146,12 +196,18 @@ early_stop_2 = tf.keras.callbacks.EarlyStopping(
     restore_best_weights=True
 )
 
+epoch_logger_2 = EpochLogger()
+
+logger.info("="*60)
+logger.info("PHASE 2: FINE-TUNING START")
+logger.info("="*60)
+
 history_fine = model.fit(
     train_ds,
     validation_data=val_ds,
     epochs=20,
     class_weight=class_weights,
-    callbacks=[early_stop_2]
+    callbacks=[early_stop_2, epoch_logger_2]
 )
 
 
