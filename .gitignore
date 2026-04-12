@@ -52,6 +52,8 @@ env/
 dataset/
 dataset_cropped/
 dataset_cropped_new/
+dataset_smartcrop/
+dataset_smartcrop_new/
 train/
 val/
 *.zip

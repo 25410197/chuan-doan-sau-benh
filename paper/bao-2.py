@@ -7,8 +7,16 @@ from torch.utils.data import DataLoader
 import numpy as np
 import os
 import logging
+import warnings
 import matplotlib.pyplot as plt
 from itertools import cycle
+from PIL import Image
+
+# Triệt tiêu cảnh báo DecompressionBombWarning từ PIL
+warnings.filterwarnings('ignore', category=Image.DecompressionBombWarning)
+# Hoặc tăng giới hạn pixel tối đa (set None để bỏ giới hạn)
+Image.MAX_IMAGE_PIXELS = None
+
 from sklearn.model_selection import StratifiedKFold
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
