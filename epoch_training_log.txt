@@ -1,0 +1,45 @@
+2026-04-05 23:38:56,374 - ============================================================
+2026-04-05 23:38:56,377 - PHASE 1 TRAINING START
+2026-04-05 23:38:56,377 - ============================================================
+2026-04-05 23:38:56,609 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:56,627 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:56,648 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:56,661 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:56,828 - Using a while_loop for converting ImageProjectiveTransformV3 cause there is no registered converter for this op.
+2026-04-05 23:38:56,905 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:56,927 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:56,953 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:56,969 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:57,079 - Using a while_loop for converting ImageProjectiveTransformV3 cause there is no registered converter for this op.
+2026-04-05 23:38:57,127 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:57,147 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:57,172 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:57,180 - Using a while_loop for converting StatelessRandomUniformFullIntV2 cause there is no registered converter for this op.
+2026-04-05 23:38:57,209 - Using a while_loop for converting StatelessRandomGetKeyCounter cause there is no registered converter for this op.
+2026-04-05 23:38:57,227 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:57,294 - Using a while_loop for converting AdjustContrastv2 cause Input "contrast_factor" of op 'AdjustContrastv2' expected to be loop invariant.
+2026-04-05 23:38:57,344 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:57,359 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:57,377 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:57,392 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:58,272 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:58,290 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,309 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,323 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:58,449 - Using a while_loop for converting ImageProjectiveTransformV3 cause there is no registered converter for this op.
+2026-04-05 23:38:58,498 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:58,513 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,529 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,529 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:58,627 - Using a while_loop for converting ImageProjectiveTransformV3 cause there is no registered converter for this op.
+2026-04-05 23:38:58,659 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:58,677 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,690 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,706 - Using a while_loop for converting StatelessRandomUniformFullIntV2 cause there is no registered converter for this op.
+2026-04-05 23:38:58,727 - Using a while_loop for converting StatelessRandomGetKeyCounter cause there is no registered converter for this op.
+2026-04-05 23:38:58,747 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.
+2026-04-05 23:38:58,785 - Using a while_loop for converting AdjustContrastv2 cause Input "contrast_factor" of op 'AdjustContrastv2' expected to be loop invariant.
+2026-04-05 23:38:58,844 - Using a while_loop for converting RngReadAndSkip cause there is no registered converter for this op.
+2026-04-05 23:38:58,860 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,880 - Using a while_loop for converting Bitcast cause there is no registered converter for this op.
+2026-04-05 23:38:58,894 - Using a while_loop for converting StatelessRandomUniformV2 cause there is no registered converter for this op.

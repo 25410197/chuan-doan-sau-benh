@@ -56,7 +56,7 @@ BATCH_SIZE = 32
 # LOAD DATASET
 # ======================
 train_ds = tf.keras.utils.image_dataset_from_directory(
-    "../dataset_cropped_new/train",
+    "dataset_smartcrop/train",
     image_size=(IMG_SIZE, IMG_SIZE),
     batch_size=BATCH_SIZE,
     shuffle=True,
@@ -64,7 +64,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 )
 
 val_ds = tf.keras.utils.image_dataset_from_directory(
-    "../dataset_cropped_new/val",
+    "dataset_smartcrop/val",
     image_size=(IMG_SIZE, IMG_SIZE),
     batch_size=BATCH_SIZE,
     shuffle=False  # QUAN TRỌNG: không shuffle val để evaluation đúng
